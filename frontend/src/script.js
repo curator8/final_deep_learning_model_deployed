@@ -230,7 +230,10 @@ const predictRoughness = async (selectedFile) => {
   });
 
   if (!response.ok) {
-    const message = await response.text();
+    const responseText = await response.text();
+    const message = response.headers.get("content-type")?.includes("text/html")
+      ? response.statusText
+      : responseText;
     throw new Error(`Prediction failed: ${message}`);
   }
 
